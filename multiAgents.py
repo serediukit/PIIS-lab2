@@ -4,7 +4,7 @@
 # educational purposes provided that (1) you do not distribute or publish
 # solutions, (2) you retain this notice, and (3) you provide clear
 # attribution to UC Berkeley, including a link to http://ai.berkeley.edu.
-# 
+#
 # Attribution Information: The Pacman AI projects were developed at UC Berkeley.
 # The core projects and autograders were primarily created by John DeNero
 # (denero@cs.berkeley.edu) and Dan Klein (klein@cs.berkeley.edu).
@@ -75,7 +75,19 @@ class ReflexAgent(Agent):
         newScaredTimes = [ghostState.scaredTimer for ghostState in newGhostStates]
 
         "*** YOUR CODE HERE ***"
-        return successorGameState.getScore()
+        sc = successorGameState.getScore()
+        if len( currentGameState.getFood().asList() ) > len( newFood.asList() ):
+            sc += 10
+
+        minDist = float('inf')
+        for f in newFood.asList():
+            dist = util.manhattanDistance(newPos, f)
+            if dist < minDist:
+                minDist = dist
+
+        sc += 10 / minDist
+
+        return sc
 
 def scoreEvaluationFunction(currentGameState: GameState):
     """
@@ -111,6 +123,20 @@ class MinimaxAgent(MultiAgentSearchAgent):
     """
     Your minimax agent (question 2)
     """
+
+    def minimax(self, gameState: GameState, agentIndex, depth = 5):
+
+        if depth == 0 or gameState.isWin() or gameState.isLose():
+            return (self.evaluationFunction(gameState), Directions.STOP)
+
+        if agentIndex == gameState.getNumAgents() - 1:
+            depth -= 1
+        agentIndex %= gameState.getNumAgents()
+
+        if agentIndex == 0:
+            bestAction = Directions.STOP
+            sc = -float('inf');
+
 
     def getAction(self, gameState: GameState):
         """
