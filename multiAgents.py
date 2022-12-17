@@ -221,6 +221,8 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
                 beta = min( sc, beta )
             return (sc, bestAction)
 
+
+
     def getAction(self, gameState: GameState):
         """
         Returns the minimax action using self.depth and self.evaluationFunction
@@ -258,7 +260,10 @@ class ExpectimaxAgent(MultiAgentSearchAgent):
             for act in legalActions:
                 successor = gameState.generateSuccessor(agentIndex, act)
                 sc += self.expectimax(successor, agentIndex + 1, depth)[0]
+            sc /= len(legalActions)
             return (sc, bestAction)
+
+
 
     def getAction(self, gameState: GameState):
         """
